@@ -50,10 +50,3 @@ def output(words):
     """
     for word in words:
         print(f"{word.word_en}（{word.word_jp}）\t{word.express}")
-
-
-if __name__ == "__main__":
-    print("Please paste e-mail text in my english lesson.\n")
-    _text = read()
-    _words = parse(_text)
-    output(_words)

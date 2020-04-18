@@ -29,14 +29,16 @@ def parse(text):
     """
     lined_text = []
     for row in text:
+        row = row.lstrip()
         if row.startswith("e.g."):
             lined_text[-1] += " " + row
         else:
             lined_text.append(row)
     words = []
     for row in lined_text:
-        r = match('(\\w+)\\((\\w+)\\)\\s*(\\/.*\\/)?\\s*(.+)\\/(.+)e\\.g\\.(.+)', row)
+        r = match('([\\w\\s]+)\\((\\w+)\\)\\s*(\\/.*\\/)?\\s*(.+)\\/(.+)e\\.g\\.(.+)', row)
         if r is None:
+            print(f"[WARN] Parsing failed: {row}")
             continue
         p = [x.strip() if x else "" for x in r.groups()]
         word = Word(p[0], p[3], p[1], p[4], p[5])

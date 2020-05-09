@@ -5,7 +5,7 @@ Convert e-mail text in my english lesson into english words list to import them 
 ## Install
 ```bash
 pipenv install
-pipenv run setup.py install
+pipenv run python setup.py install
 ```
 
 ## Usage

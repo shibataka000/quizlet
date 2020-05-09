@@ -1,5 +1,7 @@
 # quizlet
 
+[![CircleCI](https://circleci.com/gh/shibataka000/quizlet.svg?style=shield)](https://circleci.com/gh/shibataka000/quizlet)
+
 Convert e-mail text in my english lesson into english words list to import them to [quizlet](https://quizlet.com/).
 
 ## Install

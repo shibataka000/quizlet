@@ -1,0 +1,21 @@
+version: 2.1
+executors:
+  python:
+    docker:
+      - image: circleci/python:3.8.2
+jobs:
+  build:
+    executor:
+      name: python
+    steps:
+      - checkout
+      - run:
+          name: Setup
+          command: pipenv install --dev
+      - run:
+          name: Run tests
+          command: pipenv run pytest 
+workflows:
+  build:
+    jobs:
+      - build

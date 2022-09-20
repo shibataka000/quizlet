@@ -1,14 +1,16 @@
 package quizlet
 
 import (
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestParse(t *testing.T) {
 	tests := []struct {
 		text string
 		word *Word
+		skip bool
 	}{
 		{
 			text: `significantly(adv)   大いに、著しく、かなり/ in a statistically significant way; hugely, notably, considerably, remarkably e.g. increase significantly, change significantly`,
@@ -19,6 +21,7 @@ func TestParse(t *testing.T) {
 				Description: "in a statistically significant way; hugely, notably, considerably, remarkably",
 				Example:     "increase significantly, change significantly",
 			},
+			skip: false,
 		},
 		{
 			text: `municipal(n) /mjunísəpəl/    地方自治体の/ of or pertaining to a city, town, etc., or its local government  e.g. municipal elections, municipal policy`,
@@ -29,6 +32,7 @@ func TestParse(t *testing.T) {
 				Description: "of or pertaining to a city, town, etc., or its local government",
 				Example:     "municipal elections, municipal policy",
 			},
+			skip: false,
 		},
 		{
 			text: `  ※would rather … : …する方がよい、むしろ…したい`,
@@ -39,17 +43,28 @@ func TestParse(t *testing.T) {
 				Description: "",
 				Example:     "",
 			},
+			skip: false,
+		},
+		{
+			text: `★Useful Words and Phrases`,
+			word: nil,
+			skip: true,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.text, func(t *testing.T) {
-			word, err := Parse(tt.text)
+			word, skip, err := Parse(tt.text)
 			if err != nil {
 				t.Fatal(err)
 			}
-			if !reflect.DeepEqual(word, tt.word) {
-				t.Fatalf("Expected is %v but actual is %v", tt.word, word)
+			if diff := cmp.Diff(tt.skip, skip); diff != "" {
+				t.Fatalf(diff)
+			}
+			if !tt.skip {
+				if diff := cmp.Diff(tt.word, word); diff != "" {
+					t.Fatalf(diff)
+				}
 			}
 		})
 	}

@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/shibataka000/quizlet/internal/quizlet"
 )
@@ -23,12 +22,12 @@ func main() {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		text := scanner.Text()
-		if strings.HasPrefix(text, "★") || strings.HasPrefix(text, "・") || text == "" {
-			continue
-		}
-		word, err := quizlet.Parse(text)
+		word, skip, err := quizlet.Parse(text)
 		if err != nil {
 			fmt.Printf("[WARN] %v\n", err)
+			continue
+		}
+		if skip {
 			continue
 		}
 		switch word.Kind {

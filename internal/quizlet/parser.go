@@ -7,7 +7,12 @@ import (
 )
 
 // Parse text which is a part of lesson review memo and return Word object.
-func Parse(text string) (*Word, error) {
+func Parse(text string) (*Word, bool, error) {
+	// Skip
+	if strings.HasPrefix(text, "★") || strings.HasPrefix(text, "・") || text == "" {
+		return nil, true, nil
+	}
+
 	// Useful Words and Phrases
 	re := regexp.MustCompile(`([\w\s]+)\((\w+)\)\s*(\/.*\/)?\s*(.+)\/(.+)e\.g\.(.+)`)
 	if re.MatchString(text) {
@@ -18,7 +23,7 @@ func Parse(text string) (*Word, error) {
 			Japanese:    strings.TrimSpace(match[4]),
 			Description: strings.TrimSpace(match[5]),
 			Example:     strings.TrimSpace(match[6]),
-		}, nil
+		}, false, nil
 	}
 
 	// Useful Expressions
@@ -31,8 +36,8 @@ func Parse(text string) (*Word, error) {
 			Japanese:    strings.TrimSpace(match[2]),
 			Description: "",
 			Example:     "",
-		}, nil
+		}, false, nil
 	}
 
-	return nil, fmt.Errorf("fail to parse '%s'", text)
+	return nil, false, fmt.Errorf("fail to parse '%s'", text)
 }

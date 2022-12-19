@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"flag"
 	"fmt"
 	"os"
 
@@ -10,16 +9,7 @@ import (
 )
 
 func main() {
-	path := flag.String("file", "input.txt", "")
-	flag.Parse()
-
-	file, err := os.Open(*path)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
+	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		text := scanner.Text()
 		word, skip, err := quizlet.Parse(text)

@@ -1,7 +1,6 @@
 FMT_TARGET = $(shell find . -type f -name "*.go")
 LINT_TARGET = $(shell go list ./...)
 TEST_TARGET = ./...
-BUILD_BINARY := quizlet
 
 .PHONY: default
 default: run
@@ -26,11 +25,15 @@ test: checkfmt lint
 
 .PHONY: build
 build:
-	go build -o $(BUILD_BINARY)
+	go build
+
+.PHONY: install
+install:
+	go install
 
 .PHONY: clean
 clean:
-	rm $(BUILD_BINARY)
+	rm quizlet
 
 .PHONY: run
 run:

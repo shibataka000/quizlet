@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/shibataka000/quizlet/internal/quizlet"
+	"github.com/shibataka000/quizlet/quizlet"
 )
 
 func main() {

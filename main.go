@@ -12,12 +12,12 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		text := scanner.Text()
-		word, skip, err := quizlet.Parse(text)
-		if err != nil {
-			fmt.Printf("[WARN] %v\n", err)
+		if quizlet.ShouldSkip(text) {
 			continue
 		}
-		if skip {
+		word, err := quizlet.Parse(text)
+		if err != nil {
+			fmt.Printf("[WARN] %v\n", err)
 			continue
 		}
 		switch word.Kind {

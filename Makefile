@@ -1,40 +1,26 @@
-FMT_TARGET = $(shell find . -type f -name "*.go")
-LINT_TARGET = $(shell go list ./...)
-TEST_TARGET = ./...
+.PHONY: default setup fmt lint test build install clean
 
-.PHONY: default
-default: run
+default: build
 
-.PHONY: setup
 setup:
-	go install golang.org/x/lint/golint@latest
 	go install golang.org/x/tools/cmd/goimports@latest
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(shell go env GOPATH)/bin
 
-.PHONY: checkfmt
-checkfmt:
-	test ! -n "$(shell goimports -l $(FMT_TARGET))"
+fmt:
+	go fmt ./...
+	goimports -w $(shell find . -type f -name "*.go")
 
-.PHONY: lint
 lint:
-	go vet $(LINT_TARGET)
-	golint -set_exit_status $(LINT_TARGET)
+	golangci-lint run
 
-.PHONY: test
-test: checkfmt lint
-	go test $(TEST_TARGET)
+test:
+	go test ./...
 
-.PHONY: build
 build:
 	go build
 
-.PHONY: install
 install:
 	go install
 
-.PHONY: clean
 clean:
-	rm quizlet
-
-.PHONY: run
-run:
-	@go run main.go
+	go clean -testcache

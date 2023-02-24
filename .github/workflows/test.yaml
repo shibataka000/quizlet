@@ -1,5 +1,6 @@
 name: Test
-on: push
+on:
+  push:
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -8,7 +9,5 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version-file: go.mod
-      - name: Set up
-        run: make setup
-      - name: Run test
+      - name: Run tests
         run: make test
